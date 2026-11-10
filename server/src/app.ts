@@ -15,7 +15,7 @@ app.use(helmet());
 app.use(cors({ origin: CORS_ORIGINS.length > 0 ? CORS_ORIGINS : false }));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false, limit: "1mb" }));
-app.use(morgan(NODE_ENV === "production" ? "combined" : "dev"));
+app.use(morgan(NODE_ENV === "prod" ? "combined" : "dev"));
 
 const notFoundHandler: RequestHandler = (_req, res) => {
   res.status(404).json({ success: false, message: "Not found" });

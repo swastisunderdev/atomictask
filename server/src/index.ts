@@ -1,11 +1,19 @@
 import { createServer } from "node:http";
 import chalk from "chalk";
 import { NODE_ENV, PORT } from "./shared/config/envConfig.js";
+import connectDB from "./shared/config/dbConfig.js";
 import app from "./app.js";
 
-function main() {
+async function main(): Promise<void> {
   try {
+    await connectDB();
+
     const server = createServer(app);
+
+    server.on("error", (error) => {
+      console.error(chalk.red.bold("Server failed:"), error);
+      process.exitCode = 1;
+    });
 
     server.listen(PORT, () => {
       console.log(
@@ -14,7 +22,8 @@ function main() {
     });
   } catch (error) {
     console.error(chalk.red.bold("Server failed to start:"), error);
+    process.exitCode = 1;
   }
 }
 
-main();
+void main();
